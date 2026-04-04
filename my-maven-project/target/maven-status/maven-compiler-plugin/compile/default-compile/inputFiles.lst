@@ -1,6 +1,11 @@
 /Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/App.java
 /Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/Controller/DemoController.java
+/Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/Controller/RegistrationController.java
+/Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/Controller/SongController.java
 /Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/Controller/TestController.java
+/Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/Controller/ViewController.java
+/Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/dto/LoginRequest.java
+/Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/dto/RegistrationRequest.java
 /Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/dto/ScoreboardEntry.java
 /Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/model/Country.java
 /Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/model/Jury.java
@@ -8,6 +13,7 @@
 /Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/model/Point.java
 /Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/model/Show.java
 /Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/model/Song.java
+/Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/model/Vote.java
 /Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/model/Voter.java
 /Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/repository/CountryRepository.java
 /Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/repository/PerformerRepository.java

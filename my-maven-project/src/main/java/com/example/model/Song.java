@@ -32,9 +32,13 @@ public class Song {
     )
     private List<Show> shows = new ArrayList<>();
 
+    // --- NEW FIELD: Votes ---
+    @Column(nullable = false)
+    private int votes = 0; // Default value is 0
+
     public Song() {} // Required by JPA
 
-    // Manual Getters and Setters
+    // --- Getters and Setters ---
     public Long getId() { return id; }
     
     public String getTitle() { return title; }
@@ -46,13 +50,16 @@ public class Song {
     public List<Performer> getPerformers() { return performers; }
     public void setPerformers(List<Performer> performers) { this.performers = performers; }
 
-    // --- MANUAL GETTERS AND SETTERS FOR SHOWS ---
-    public List<Show> getShows() {
-        return shows;
+    public List<Show> getShows() { return shows; }
+    public void setShows(List<Show> shows) { this.shows = shows; }
+
+    // --- NEW GETTER AND SETTER FOR VOTES ---
+    public int getVotes() {
+        return votes;
     }
 
-    public void setShows(List<Show> shows) {
-        this.shows = shows;
+    public void setVotes(int votes) {
+        this.votes = votes;
     }
 
     // 3. Helper method: Professional way to add performers

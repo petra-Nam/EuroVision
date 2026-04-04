@@ -9,32 +9,36 @@
         <h1>Eurovision Demo</h1>
         <hr>
 
+        <!-- Register Button -->
+        <a href="/register" class="btn btn-primary mb-3">Register</a>
+
+        <!-- Login Button -->
+        <a href="/login" class="btn btn-success mb-3">Login</a>
+
         <h2>Songs</h2>
         <table class="table table-striped">
             <thead>
                 <tr>
                     <th>Title</th>
                     <th>Country</th>
+                    <th>Performers</th>
+                    <th>Shows</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="song : ${songs}">
                     <td th:text="${song.title}"></td>
                     <td th:text="${song.country.name}"></td>
-                </tr>
-            </tbody>
-        </table>
-
-        <h2>Shows</h2>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Type</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="show : ${shows}">
-                    <td th:text="${show.type}"></td>
+                    <td>
+                        <ul>
+                            <li th:each="performer : ${song.performers}" th:text="${performer.name}"></li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            <li th:each="show : ${song.shows}" th:text="${show.type}"></li>
+                        </ul>
+                    </td>
                 </tr>
             </tbody>
         </table>

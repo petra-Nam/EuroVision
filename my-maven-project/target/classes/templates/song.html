@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Songs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .song {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Available Songs</h1>
+    <div id="songsContainer"></div>
+
+    <script>
+        const songsContainer = document.getElementById('songsContainer');
+
+        // Fetch songs from the backend
+        async function fetchSongs() {
+            try {
+                const response = await fetch('/api/songs');
+                if (response.ok) {
+                    const songs = await response.json();
+                    songs.forEach(song => {
+                        const songDiv = document.createElement('div');
+                        songDiv.classList.add('song');
+                        songDiv.innerHTML = `
+                            <p><strong>Title:</strong> ${song.title}</p>
+                            <p><strong>Country:</strong> ${song.country.name}</p>
+                            <button onclick="voteForSong(${song.id})">Vote</button>
+                        `;
+                        songsContainer.appendChild(songDiv);
+                    });
+                } else {
+                    songsContainer.textContent = "Failed to load songs.";
+                }
+            } catch (error) {
+                songsContainer.textContent = `Error: ${error.message}`;
+            }
+        }
+
+        // Vote for a song
+        async function voteForSong(songId) {
+            try {
+                const response = await fetch(`/api/vote/${songId}`, { method: 'POST' });
+                if (response.ok) {
+                    alert("Vote submitted successfully!");
+                } else {
+                    alert("Failed to submit vote.");
+                }
+            } catch (error) {
+                alert(`Error: ${error.message}`);
+            }
+        }
+
+        // Load songs on page load
+        fetchSongs();
+    </script>
+</body>
+</html>
