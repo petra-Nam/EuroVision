@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Eurovision Songs</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <!-- Informational Section -->
+    <div class="alert alert-info shadow-sm p-4 mb-5 bg-white rounded">
+        <h2 class="text-primary">Welcome to the Eurovision Voting Portal</h2>
+        <p class="lead">Please read the voting regulations carefully before submitting your scores.</p>
+        <hr>
+        
+        <div class="row">
+            <div class="col-md-6 border-end">
+                <h4><span class="badge bg-success">General Public</span></h4>
+                <p>As a member of the global audience, your voice decides who stays and who goes! In the <strong>Semi-Finals</strong>, the result is 100% in your hands. You may vote for any song <em>except</em> the one representing your own country.</p>
+                <ul>
+                    <li><strong>Multiple Votes:</strong> You can award points to multiple different songs.</li>
+                    <li><strong>Selection:</strong> Use the dropdown to choose your favorite and click 'Vote'.</li>
+                </ul>
+            </div>
+
+            <div class="col-md-6">
+                <h4><span class="badge bg-warning text-dark">National Jury</span></h4>
+                <p>Professional Juries evaluate the Grand Final based on vocal capacity, performance, and composition. Juries must provide a full ranking of their top songs.</p>
+                <ul>
+                    <li><strong>The Unique Score Rule:</strong> You cannot award the same point value (e.g., 12 points) to two different countries.</li>
+                    <li><strong>Point Scale:</strong> You must distribute exactly 1-8, 10, and 12 points across your top 10 favorites.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Information Section -->
+    <div class="alert alert-dark d-flex justify-content-between align-items-center">
+        <span>
+            Logged in as: <strong th:text="${voter.name}">User Name</strong> 
+            from <span class="badge bg-info" th:text="${voter.originCountry.name}">Country</span>
+        </span>
+        <span class="text-uppercase fw-bold text-warning" th:text="${voter instanceof T(com.example.model.Jury) ? 'Jury Member' : 'Public Voter'}">
+            Voter Type
+        </span>
+    </div>
+
+    <!-- Step 1: Select the Show -->
+    <div class="mb-4 p-3 border rounded bg-light">
+        <h5>Step 1: Select the Show</h5>
+        <div class="btn-group" role="group">
+            <a href="/songs?showId=1" class="btn btn-outline-primary">Semi-Final 1</a>
+            <a href="/songs?showId=2" class="btn btn-outline-primary">Semi-Final 2</a>
+            <a href="/songs?showId=3" class="btn btn-outline-primary">Grand Final</a>
+        </div>
+    </div>
+
+    <!-- Songs Table -->
+    <div class="container mt-5">
+        <h1>Available Songs</h1>
+        <table class="table table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Country</th>
+                    <th>Song Title</th>
+                    <th>Score</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="song : ${songs}">
+                    <td th:text="${song.country != null ? song.country.name : 'Unknown'}"></td>
+                    <td th:text="${song.title}"></td>
+                    <td>
+                        <!-- Dropdown for Score -->
+                        <select class="form-select" th:id="'score-' + ${song.id}">
+                            <option value="12">12</option>
+                            <option value="10">10</option>
+                            <option value="8">8</option>
+                            <option value="7">7</option>
+                            <option value="6">6</option>
+                            <option value="5">5</option>
+                            <option value="4">4</option>
+                            <option value="3">3</option>
+                            <option value="2">2</option>
+                            <option value="1">1</option>
+                        </select>
+                    </td>
+                    <td>
+                        <!-- Submit Vote Button -->
+                        <button class="btn btn-primary" th:onclick="'submitVote(' + ${song.id} + ')'">
+                            Submit Vote
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        async function submitVote(songId) {
+            // 1. Get the points from the dropdown next to the button
+            const pointsElement = document.getElementById(`points-${songId}`);
+            if (!pointsElement) {
+                alert("Error: Could not find points selection.");
+                return;
+            }
+            const points = pointsElement.value;
+            
+            // 2. Get showId from the URL (?showId=1)
+            const urlParams = new URLSearchParams(window.location.search);
+            const showId = urlParams.get('showId') || 1; 
+            
+            // 3. HARDCODE check: Ensure Voter 1 exists in your DB!
+            const voterId = 1; 
+
+            try {
+                const response = await fetch(`/api/vote/${songId}?voterId=${voterId}&points=${points}&showId=${showId}`, {
+                    method: 'POST'
+                });
+
+                const result = await response.text();
+                alert(result); // Shows the message from your VoteService
+                
+            } catch (error) {
+                console.error("Fetch error:", error);
+                alert("Connection failed. Check if the backend is running.");
+            }
+        }
+    </script>
+</body>
+</body>
+</html>

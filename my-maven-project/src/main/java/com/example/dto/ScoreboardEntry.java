@@ -3,9 +3,9 @@ package com.example.dto;
 public class ScoreboardEntry {
     private String countryName;
     private String songTitle;
-    private long juryPoints;
-    private long publicPoints;
-    private long totalPoints;
+    private Long juryPoints;
+    private Long publicPoints;
+    private Long totalPoints;
 
     // 1. Manual Constructor (Required for the @Query in PointRepository)
     public ScoreboardEntry(String countryName, String songTitle, long juryPoints, long publicPoints, long totalPoints) {

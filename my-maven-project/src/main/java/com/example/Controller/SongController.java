@@ -1,12 +1,14 @@
 package com.example.Controller;
 
+import com.example.model.Show;
 import com.example.model.Song;
+import com.example.model.Voter;
+import com.example.repository.ShowRepository;
 import com.example.repository.SongRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.repository.VoterRepository;
+import com.example.service.VoteService;
+
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -14,10 +16,21 @@ import java.util.List;
 @RequestMapping("/api")
 public class SongController {
 
+    // 1. Declare all the dependencies your methods need
     private final SongRepository songRepository;
+    private final VoterRepository voterRepository;
+    private final ShowRepository showRepository;
+    private final VoteService voteService;
 
-    public SongController(SongRepository songRepository) {
+    // 2. Add them all to the Constructor (Dependency Injection)
+    public SongController(SongRepository songRepository, 
+                          VoterRepository voterRepository, 
+                          ShowRepository showRepository, 
+                          VoteService voteService) {
         this.songRepository = songRepository;
+        this.voterRepository = voterRepository;
+        this.showRepository = showRepository;
+        this.voteService = voteService;
     }
 
     @GetMapping("/songs")
@@ -26,11 +39,39 @@ public class SongController {
     }
 
     @PostMapping("/vote/{songId}")
-    public String voteForSong(@PathVariable Long songId) {
+public String voteForSong(@PathVariable Long songId, 
+                          @RequestParam int points,
+                          @RequestParam Long showId,
+                          @SessionAttribute("voterId") Long voterId) { // Retrieve voterId from session
+    try {
+        // Validate points (must be 1-8, 10, or 12)
+        if (points < 1 || (points > 8 && points != 10 && points != 12)) {
+            throw new IllegalArgumentException("Invalid points: " + points + ". Must be 1-8, 10, or 12.");
+        }
+
+        // Validate song
         Song song = songRepository.findById(songId)
             .orElseThrow(() -> new RuntimeException("Song not found"));
-        song.setVotes(song.getVotes() + 1);
-        songRepository.save(song);
-        return "Vote submitted successfully!";
+
+        // Validate voter
+        Voter voter = voterRepository.findById(voterId)
+            .orElseThrow(() -> new RuntimeException("Voter not found"));
+
+        // Validate show
+        Show show = showRepository.findById(showId)
+            .orElseThrow(() -> new RuntimeException("Show not found"));
+
+        // Process the vote
+        voteService.castVote(points, voter, song, show);
+
+        return "Successfully submitted " + points + " points for " + song.getTitle() + "!";
+        
+    } catch (IllegalArgumentException e) {
+        // Return specific rule violation
+        return "Error: " + e.getMessage();
+    } catch (Exception e) {
+        // Return generic system error
+        return "System Error: " + e.getMessage();
     }
+}
 }

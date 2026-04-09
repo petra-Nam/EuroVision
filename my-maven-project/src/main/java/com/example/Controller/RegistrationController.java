@@ -8,10 +8,15 @@ import com.example.repository.CountryRepository;
 import com.example.dto.LoginRequest;
 import java.util.Optional;
 import com.example.repository.VoterRepository;
+
+import jakarta.servlet.http.HttpSession;
+
 import com.example.dto.LoginRequest;
+
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 @RequestMapping("/api")
 public class RegistrationController {
 
@@ -46,11 +51,20 @@ public class RegistrationController {
         }
     }
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest request) {
-        Voter voter = voterRepository.findByUsernameAndPassword(request.getUsername(), request.getPassword())
-            .orElseThrow(() -> new RuntimeException("Invalid username or password"));
-        return "Login successful!";
-    }
+public String login(@RequestParam String username, 
+                    @RequestParam String password, 
+                    HttpSession session) {
+    
+    // 1. Search the database for the REAL voter
+    Voter voter = voterRepository.findByUsernameAndPassword(username, password)
+        .orElseThrow(() -> new RuntimeException("Invalid username or password"));
+
+    // 2. SAVE the voter to the Session (This is the "Key" for the Songs page)
+    session.setAttribute("loggedInVoter", voter);
+
+    // 3. REDIRECT: Tell the browser to load the songs page immediately
+    return "redirect:/songs?showId=1"; 
+}
 
 
 

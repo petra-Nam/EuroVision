@@ -9,7 +9,12 @@ import java.util.Optional;
 
 @Repository
 public interface VoterRepository extends JpaRepository<Voter, Long> {
+    // Find a voter by username and password
     Optional<Voter> findByUsernameAndPassword(String username, String password);
-    // Professional touch: Find all voters from a specific country
+
+    // Find all voters from a specific country
     List<Voter> findByOriginCountry(Country country);
+
+    // Add this method to find a voter by username
+    Optional<Voter> findByUsername(String username);
 }

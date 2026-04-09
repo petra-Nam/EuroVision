@@ -1,5 +1,7 @@
 package com.example.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -11,6 +13,11 @@ public class Country {
 
     @Column(nullable = false, unique = true)
     private String name;
+
+    // In Country.java
+@OneToOne(mappedBy = "country")
+@JsonIgnore // <--- This ensures Country doesn't try to load the Song again
+private Song song;
 
     private boolean isBigFive;
     private boolean isVirtualGroup;

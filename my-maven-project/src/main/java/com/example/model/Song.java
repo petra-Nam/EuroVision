@@ -2,6 +2,9 @@ package com.example.model;
 
 import jakarta.persistence.*;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.ArrayList;
 
 @Entity
@@ -14,10 +17,11 @@ public class Song {
     @Column(nullable = false)
     private String title;
 
-    // 1. FetchType.LAZY is best practice to keep the app fast
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "country_id", unique = true) 
-    private Country country;
+    // In Song.java
+@OneToOne(fetch = FetchType.EAGER) // EAGER is better for your simple fetch logic
+@JoinColumn(name = "country_id", unique = true)
+@JsonIgnoreProperties("song") // <--- THIS STOPS THE 500 ERROR
+private Country country;
 
     // 2. orphanRemoval ensures that if you delete a song, its performers are cleaned up
     @OneToMany(mappedBy = "song", cascade = CascadeType.ALL, orphanRemoval = true)
