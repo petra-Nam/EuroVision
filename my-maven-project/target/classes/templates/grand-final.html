@@ -10,129 +10,22 @@
         <p class="lead">Vote for your favorite songs in the Grand Final!</p>
         <hr>
 
-        <!-- Big Five + Host -->
-        <h2>Big Five + Host</h2>
-        <table class="table table-hover mt-2">
+        <h2>Finalists</h2>
+        <table class="table table-hover">
             <thead class="table-dark">
                 <tr>
                     <th>Country</th>
                     <th>Song Title</th>
-                    <th>Score</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="song : ${bigFiveAndHost}">
+                <tr th:each="song : ${finalists}">
                     <td th:text="${song.country.name}"></td>
                     <td th:text="${song.title}"></td>
                     <td>
-                        <div th:if="${voter instanceof T(com.example.model.Jury)}">
-                            <select class="form-select form-select-sm" th:id="'score-' + ${song.id}">
-                                <option value="12">12 pts</option>
-                                <option value="10">10 pts</option>
-                                <option value="8">8 pts</option>
-                                <option value="7">7 pts</option>
-                                <option value="6">6 pts</option>
-                                <option value="5">5 pts</option>
-                                <option value="4">4 pts</option>
-                                <option value="3">3 pts</option>
-                                <option value="2">2 pts</option>
-                                <option value="1">1 pt</option>
-                            </select>
-                        </div>
-                        <div th:unless="${voter instanceof T(com.example.model.Jury)}">
-                            <span class="text-muted">Standard Vote</span>
-                        </div>
-                    </td>
-                    <td>
-                        <button class="btn btn-sm btn-primary" th:onclick="'submitVote(' + ${song.id} + ')'">
-                            Submit Vote
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- Top 10 from Semi-Final 1 -->
-        <h2>Top 10 from Semi-Final 1</h2>
-        <table class="table table-hover mt-2">
-            <thead class="table-dark">
-                <tr>
-                    <th>Country</th>
-                    <th>Song Title</th>
-                    <th>Score</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="song : ${semi1Winners}">
-                    <td th:text="${song.country.name}"></td>
-                    <td th:text="${song.title}"></td>
-                    <td>
-                        <div th:if="${voter instanceof T(com.example.model.Jury)}">
-                            <select class="form-select form-select-sm" th:id="'score-' + ${song.id}">
-                                <option value="12">12 pts</option>
-                                <option value="10">10 pts</option>
-                                <option value="8">8 pts</option>
-                                <option value="7">7 pts</option>
-                                <option value="6">6 pts</option>
-                                <option value="5">5 pts</option>
-                                <option value="4">4 pts</option>
-                                <option value="3">3 pts</option>
-                                <option value="2">2 pts</option>
-                                <option value="1">1 pt</option>
-                            </select>
-                        </div>
-                        <div th:unless="${voter instanceof T(com.example.model.Jury)}">
-                            <span class="text-muted">Standard Vote</span>
-                        </div>
-                    </td>
-                    <td>
-                        <button class="btn btn-sm btn-primary" th:onclick="'submitVote(' + ${song.id} + ')'">
-                            Submit Vote
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- Top 10 from Semi-Final 2 -->
-        <h2>Top 10 from Semi-Final 2</h2>
-        <table class="table table-hover mt-2">
-            <thead class="table-dark">
-                <tr>
-                    <th>Country</th>
-                    <th>Song Title</th>
-                    <th>Score</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="song : ${semi2Winners}">
-                    <td th:text="${song.country.name}"></td>
-                    <td th:text="${song.title}"></td>
-                    <td>
-                        <div th:if="${voter instanceof T(com.example.model.Jury)}">
-                            <select class="form-select form-select-sm" th:id="'score-' + ${song.id}">
-                                <option value="12">12 pts</option>
-                                <option value="10">10 pts</option>
-                                <option value="8">8 pts</option>
-                                <option value="7">7 pts</option>
-                                <option value="6">6 pts</option>
-                                <option value="5">5 pts</option>
-                                <option value="4">4 pts</option>
-                                <option value="3">3 pts</option>
-                                <option value="2">2 pts</option>
-                                <option value="1">1 pt</option>
-                            </select>
-                        </div>
-                        <div th:unless="${voter instanceof T(com.example.model.Jury)}">
-                            <span class="text-muted">Standard Vote</span>
-                        </div>
-                    </td>
-                    <td>
-                        <button class="btn btn-sm btn-primary" th:onclick="'submitVote(' + ${song.id} + ')'">
-                            Submit Vote
+                        <button class="btn btn-primary" th:onclick="'submitVote(' + ${song.id} + ')'">
+                            Vote
                         </button>
                     </td>
                 </tr>
@@ -142,30 +35,14 @@
 
     <script>
         async function submitVote(songId) {
-            // 1. Get the score value
-            const pointsElement = document.getElementById(`score-${songId}`);
-            // If it's a public voter, pointsElement won't exist, so default to 1
-            const scoreValue = pointsElement ? pointsElement.value : "1";
-    
-            // 2. HARDCODE showId to 3 for the Grand Final
-            const showId = 3;
-    
-            // 3. Construct the full URL with BOTH parameters
-            const url = `/api/vote/${songId}?score=${scoreValue}&showId=${showId}`;
-            
+            const url = `/api/vote/${songId}`;
             try {
                 const response = await fetch(url, { method: 'POST' });
                 const result = await response.text();
-                
-                if (response.ok) {
-                    alert("Success: " + result);
-                } else {
-                    // This will help you see the specific error message from Java
-                    alert("Server Error: " + result);
-                }
+                alert(result);
             } catch (error) {
                 console.error("Fetch error:", error);
-                alert("Connection failed.");
+                alert("Failed to submit vote.");
             }
         }
     </script>

@@ -10,6 +10,7 @@ com/example/model/Jury.class
 com/example/model/Country.class
 com/example/model/Point.class
 com/example/Controller/RegistrationController.class
+com/example/repository/FinalistRepository.class
 com/example/model/Vote.class
 com/example/dto/RegistrationRequest.class
 com/example/repository/VoterRepository.class
@@ -27,6 +28,7 @@ com/example/model/Show$ShowType.class
 com/example/Controller/ViewController.class
 com/example/Controller/TestController.class
 com/example/repository/PublicVoteRepository.class
+com/example/model/Finalist.class
 com/example/service/DataInitializer.class
 com/example/Controller/DemoController.class
 com/example/model/Performer.class
