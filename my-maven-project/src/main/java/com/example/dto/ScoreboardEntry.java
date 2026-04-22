@@ -3,11 +3,11 @@ package com.example.dto;
 public class ScoreboardEntry {
     private String countryName;
     private String songTitle;
-    private Long juryPoints;
-    private Long publicPoints;
-    private Long totalPoints;
+    private long juryPoints;   // Changed from Long to long
+    private long publicPoints; // Changed from Long to long
+    private long totalPoints;  // Changed from Long to long
 
-    // 1. Manual Constructor (Required for the @Query in PointRepository)
+    // 1. Updated Constructor to handle long primitives
     public ScoreboardEntry(String countryName, String songTitle, long juryPoints, long publicPoints, long totalPoints) {
         this.countryName = countryName;
         this.songTitle = songTitle;
@@ -16,13 +16,13 @@ public class ScoreboardEntry {
         this.totalPoints = totalPoints;
     }
 
-    // 2. Manual Getters (Fixes the "cannot find symbol" error)
-    public String getSongTitle() {
-        return songTitle;
-    }
-
+    // 2. Standard Getters
     public String getCountryName() {
         return countryName;
+    }
+
+    public String getSongTitle() {
+        return songTitle;
     }
 
     public long getJuryPoints() {
@@ -35,5 +35,14 @@ public class ScoreboardEntry {
 
     public long getTotalPoints() {
         return totalPoints;
+    }
+
+    // 3. Optional: Setters (If you ever need to update entries manually)
+    public void setPublicPoints(long publicPoints) {
+        this.publicPoints = publicPoints;
+    }
+
+    public void setTotalPoints(long totalPoints) {
+        this.totalPoints = totalPoints;
     }
 }

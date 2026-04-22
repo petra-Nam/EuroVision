@@ -8,21 +8,19 @@ import com.example.repository.SongRepository;
 import com.example.repository.VoterRepository;
 import com.example.service.VoteService;
 
-import org.springframework.web.bind.annotation.*;
+import jakarta.servlet.http.HttpSession;
 
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
 public class SongController {
 
-    // 1. Declare all the dependencies your methods need
     private final SongRepository songRepository;
     private final VoterRepository voterRepository;
     private final ShowRepository showRepository;
     private final VoteService voteService;
 
-    // 2. Add them all to the Constructor (Dependency Injection)
     public SongController(SongRepository songRepository, 
                           VoterRepository voterRepository, 
                           ShowRepository showRepository, 
@@ -33,45 +31,33 @@ public class SongController {
         this.voteService = voteService;
     }
 
-    @GetMapping("/songs")
-    public List<Song> getSongs() {
-        return songRepository.findAll();
-    }
-
     @PostMapping("/vote/{songId}")
-public String voteForSong(@PathVariable Long songId, 
-                          @RequestParam int points,
-                          @RequestParam Long showId,
-                          @SessionAttribute("voterId") Long voterId) { // Retrieve voterId from session
-    try {
-        // Validate points (must be 1-8, 10, or 12)
-        if (points < 1 || (points > 8 && points != 10 && points != 12)) {
-            throw new IllegalArgumentException("Invalid points: " + points + ". Must be 1-8, 10, or 12.");
+    public String voteForSong(@PathVariable Long songId, 
+                              @RequestParam(required = false) Integer points, // Make optional
+                              @RequestParam Long showId,
+                              HttpSession session) { // Use HttpSession directly
+        try {
+            // 1. Get Voter from Session (Dynamic & Secure)
+            Voter voter = (Voter) session.getAttribute("loggedInVoter");
+            if (voter == null) {
+                return "Error: You must be logged in to vote.";
+            }
+
+            // 2. Fetch Entities
+            Song song = songRepository.findById(songId)
+                .orElseThrow(() -> new RuntimeException("Song not found"));
+            Show show = showRepository.findById(showId)
+                .orElseThrow(() -> new RuntimeException("Show not found"));
+
+            // 3. Delegate to VoteService (The logic handles Jury vs Public)
+            voteService.castVote(points, voter, song, show);
+
+            return "Vote successfully recorded for " + song.getTitle() + "!";
+            
+        } catch (IllegalArgumentException e) {
+            return "Rule Violation: " + e.getMessage();
+        } catch (Exception e) {
+            return "System Error: " + e.getMessage();
         }
-
-        // Validate song
-        Song song = songRepository.findById(songId)
-            .orElseThrow(() -> new RuntimeException("Song not found"));
-
-        // Validate voter
-        Voter voter = voterRepository.findById(voterId)
-            .orElseThrow(() -> new RuntimeException("Voter not found"));
-
-        // Validate show
-        Show show = showRepository.findById(showId)
-            .orElseThrow(() -> new RuntimeException("Show not found"));
-
-        // Process the vote
-        voteService.castVote(points, voter, song, show);
-
-        return "Successfully submitted " + points + " points for " + song.getTitle() + "!";
-        
-    } catch (IllegalArgumentException e) {
-        // Return specific rule violation
-        return "Error: " + e.getMessage();
-    } catch (Exception e) {
-        // Return generic system error
-        return "System Error: " + e.getMessage();
     }
-}
 }

@@ -10,11 +10,12 @@ public class Point {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int score; // Changed from pointsValue to score to match your Query
+    @Column(nullable = false)
+    private int score; // 1-12 points assigned by Juries
 
     @ManyToOne
     @JoinColumn(name = "voter_id")
-    private Voter voter;
+    private Voter voter; // This will be a Jury member
 
     @ManyToOne
     @JoinColumn(name = "song_id")
@@ -22,22 +23,18 @@ public class Point {
 
     @ManyToOne
     @JoinColumn(name = "show_id")
-    private Show show; // Added this relationship
+    private Show show;
 
     public Point() {}
 
-    // --- GETTERS AND SETTERS ---
+    // Getters and Setters...
     public int getScore() { return score; }
     public void setScore(int score) { this.score = score; }
-
-    public Show getShow() { return show; }
-    public void setShow(Show show) { this.show = show; }
-
     public Voter getVoter() { return voter; }
     public void setVoter(Voter voter) { this.voter = voter; }
-
     public Song getSong() { return song; }
     public void setSong(Song song) { this.song = song; }
-    
+    public Show getShow() { return show; }
+    public void setShow(Show show) { this.show = show; }
     public Long getId() { return id; }
 }

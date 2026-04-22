@@ -14,7 +14,7 @@ public class RegistrationRequest {
     public void setPassword(String password) { this.password = password; }
     public String getCountryName() { return countryName; }
     public void setCountryName(String countryName) { this.countryName = countryName; }
-    public boolean isIsJury() { return isJury; }
+    public boolean isJury() { return isJury; }
     public void setIsJury(boolean isJury) { this.isJury = isJury; }
     public String getJobTitle() { return jobTitle; }
     public void setJobTitle(String jobTitle) { this.jobTitle = jobTitle; }

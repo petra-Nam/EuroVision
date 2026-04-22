@@ -71,7 +71,7 @@
                     <td th:text="${song.title}"></td>
                     <td>
                         <!-- Dropdown for Score -->
-                        <select class="form-select" th:id="'score-' + ${song.id}">
+                        <select class="form-select" th:id="'points-' + ${song.id}">
                             <option value="12">12</option>
                             <option value="10">10</option>
                             <option value="8">8</option>
@@ -97,35 +97,31 @@
 
     <script>
         async function submitVote(songId) {
-            // 1. Get the points from the dropdown next to the button
-            const pointsElement = document.getElementById(`points-${songId}`);
-            if (!pointsElement) {
-                alert("Error: Could not find points selection.");
-                return;
-            }
-            const points = pointsElement.value;
+            // 1. Only get points if the element exists (Jury logic)
+            const pointsElement = document.getElementById(`score-${songId}`);
+            const points = pointsElement ? pointsElement.value : "";
             
-            // 2. Get showId from the URL (?showId=1)
+            // 2. Get showId from the URL
             const urlParams = new URLSearchParams(window.location.search);
             const showId = urlParams.get('showId') || 1; 
-            
-            // 3. HARDCODE check: Ensure Voter 1 exists in your DB!
-            const voterId = 1; 
-
+        
+            // 3. Simple URL: Let the server figure out who the voter is from the Session!
+            const url = `/api/vote/${songId}?points=${points}&showId=${showId}`;
+        
             try {
-                const response = await fetch(`/api/vote/${songId}?voterId=${voterId}&points=${points}&showId=${showId}`, {
-                    method: 'POST'
-                });
-
+                const response = await fetch(url, { method: 'POST' });
                 const result = await response.text();
-                alert(result); // Shows the message from your VoteService
+                alert(result); 
                 
+                // Optional: Refresh page or update UI after successful vote
+                if (!result.includes("Error")) {
+                    // location.reload(); 
+                }
             } catch (error) {
                 console.error("Fetch error:", error);
-                alert("Connection failed. Check if the backend is running.");
+                alert("Connection failed. Is the server running?");
             }
         }
     </script>
-</body>
 </body>
 </html>

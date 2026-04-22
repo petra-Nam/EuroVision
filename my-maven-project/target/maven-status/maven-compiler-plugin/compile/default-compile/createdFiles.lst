@@ -1,6 +1,7 @@
 com/example/dto/ScoreboardEntry.class
 com/example/App.class
 com/example/model/Show.class
+com/example/service/ScoreboardService.class
 com/example/repository/CountryRepository.class
 com/example/model/Song.class
 com/example/repository/SongRepository.class
@@ -14,13 +15,16 @@ com/example/dto/RegistrationRequest.class
 com/example/repository/VoterRepository.class
 com/example/model/Voter.class
 com/example/repository/ShowRepository.class
+com/example/model/PublicVote.class
 com/example/dto/LoginRequest.class
+com/example/repository/VoteRepository.class
 com/example/Controller/SongController.class
 com/example/service/VoteService.class
 com/example/repository/PointRepository.class
 com/example/model/Show$ShowType.class
 com/example/Controller/ViewController.class
 com/example/Controller/TestController.class
+com/example/repository/PublicVoteRepository.class
 com/example/service/DataInitializer.class
 com/example/Controller/DemoController.class
 com/example/model/Performer.class

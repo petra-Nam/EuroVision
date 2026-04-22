@@ -29,11 +29,12 @@ public class RegistrationController {
     }
 
     @PostMapping("/register")
+    @ResponseBody
     public String registerVoter(@RequestBody RegistrationRequest request) {
         Country country = countryRepository.findByName(request.getCountryName())
             .orElseThrow(() -> new RuntimeException("Country not found: " + request.getCountryName()));
 
-        if (request.isIsJury()) {
+        if (request.isJury()) {
             Jury jury = new Jury();
             jury.setUsername(request.getUsername());
             jury.setPassword(request.getPassword());
