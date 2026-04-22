@@ -71,23 +71,32 @@ public class VoteService {
         publicVoteRepository.save(vote);
     }
 
-    // --- ELIGIBILITY LOGIC (Stays the same) ---
+    // --- ELIGIBILITY LOGIC 
 
     private void validateShowEligibility(Voter voter, Song song, Show show) {
-        if (!show.getSongs().contains(song)) {
-            throw new IllegalArgumentException("This song is not performing in " + show.getType());
+        // 1. Check if the song is actually in the show 
+        // (Skip for FINAL because we use dynamic aggregation)
+        if (show.getType() != Show.ShowType.FINAL && !show.getSongs().contains(song)) {
+            throw new IllegalArgumentException("Rule Violation: This song is not performing in " + show.getType());
         }
-
+    
+        // 2. Check if the VOTER is allowed to vote in this Semi-Final
         if (show.getType() == Show.ShowType.SEMI1 || show.getType() == Show.ShowType.SEMI2) {
-            String countryName = voter.getOriginCountry().getName();
+            String countryName = voter.getOriginCountry().getName().trim();
+    
+            // Allow "Rest of the World" voters to vote in any semi-final
             if (countryName.equalsIgnoreCase("Rest of the World")) return;
-
+    
+            // Check if the voter's country is participating in the semi-final
             boolean isPerformer = show.getSongs().stream()
-                .anyMatch(s -> s.getCountry().equals(voter.getOriginCountry()));
+                .anyMatch(s -> s.getCountry().getId().equals(voter.getOriginCountry().getId()));
+    
+            // Check if the voter is an assigned guest for this semi-final
             boolean isAssignedGuest = isGuestForShow(countryName, show.getType());
-
+    
+            // Allow voting if the voter's country is participating or is an assigned guest
             if (!isPerformer && !isAssignedGuest) {
-                throw new IllegalArgumentException(countryName + " is not eligible to vote in " + show.getType());
+                throw new IllegalArgumentException("Rule Violation: " + countryName + " is not eligible to vote in " + show.getType());
             }
         }
     }

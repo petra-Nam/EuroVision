@@ -42,14 +42,57 @@
             Voter Type
         </span>
     </div>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Eurovision 2026: <span th:text="${currentShow.type}">Show Name</span></h2>
+        <a th:href="@{/admin/dashboard}" class="btn btn-danger shadow-sm">
+            ⚙️ Admin Panel
+       </a>
+        <a th:href="@{/results(showId=${currentShow.id})}" class="btn btn-success shadow-sm">
+            <i class="bi bi-trophy"></i> View Live Results
+        </a>
+        <!-- Button to navigate to Grand Final voting page -->
+    <a th:href="@{/grand-final}" class="btn btn-warning shadow-sm">
+        🎤 Vote in Grand Final
+    </a>
+    </div>
 
     <!-- Step 1: Select the Show -->
-    <div class="mb-4 p-3 border rounded bg-light">
-        <h5>Step 1: Select the Show</h5>
-        <div class="btn-group" role="group">
-            <a href="/songs?showId=1" class="btn btn-outline-primary">Semi-Final 1</a>
-            <a href="/songs?showId=2" class="btn btn-outline-primary">Semi-Final 2</a>
-            <a href="/songs?showId=3" class="btn btn-outline-primary">Grand Final</a>
+    <div class="mb-4 p-4 border rounded bg-light shadow-sm">
+        <h5 class="mb-3">Step 1: Choose a Show</h5>
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <h6>Semi-Final 1</h6>
+                        <div class="btn-group w-100">
+                            <a href="/songs?showId=1" class="btn btn-primary">Vote</a>
+                            <a href="/results?showId=1" class="btn btn-outline-success">Results</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <h6>Semi-Final 2</h6>
+                        <div class="btn-group w-100">
+                            <a href="/songs?showId=2" class="btn btn-primary">Vote</a>
+                            <a href="/results?showId=2" class="btn btn-outline-success">Results</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <h6>Grand Final</h6>
+                        <div class="btn-group w-100">
+                            <a href="/songs?showId=3" class="btn btn-primary">Vote</a>
+                            <a href="/results?showId=3" class="btn btn-outline-success">Results</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -70,19 +113,23 @@
                     <td th:text="${song.country != null ? song.country.name : 'Unknown'}"></td>
                     <td th:text="${song.title}"></td>
                     <td>
-                        <!-- Dropdown for Score -->
-                        <select class="form-select" th:id="'points-' + ${song.id}">
-                            <option value="12">12</option>
-                            <option value="10">10</option>
-                            <option value="8">8</option>
-                            <option value="7">7</option>
-                            <option value="6">6</option>
-                            <option value="5">5</option>
-                            <option value="4">4</option>
-                            <option value="3">3</option>
-                            <option value="2">2</option>
-                            <option value="1">1</option>
-                        </select>
+                        <div th:if="${voter instanceof T(com.example.model.Jury)}">
+                            <select class="form-select" th:id="'score-' + ${song.id}">
+                                <option value="12">12</option>
+                                <option value="10">10</option>
+                                <option value="8">8</option>
+                                <option value="7">7</option>
+                                <option value="6">6</option>
+                                <option value="5">5</option>
+                                <option value="4">4</option>
+                                <option value="3">3</option>
+                                <option value="2">2</option>
+                                <option value="1">1</option>
+                            </select>
+                        </div>
+                        <div th:unless="${voter instanceof T(com.example.model.Jury)}">
+                            <span class="text-muted">Standard Vote (1)</span>
+                        </div>
                     </td>
                     <td>
                         <!-- Submit Vote Button -->
@@ -97,29 +144,23 @@
 
     <script>
         async function submitVote(songId) {
-            // 1. Only get points if the element exists (Jury logic)
+            // 1. Matches the new th:id='score-'
             const pointsElement = document.getElementById(`score-${songId}`);
-            const points = pointsElement ? pointsElement.value : "";
+            const scoreValue = pointsElement ? pointsElement.value : "";
             
-            // 2. Get showId from the URL
             const urlParams = new URLSearchParams(window.location.search);
             const showId = urlParams.get('showId') || 1; 
         
-            // 3. Simple URL: Let the server figure out who the voter is from the Session!
-            const url = `/api/vote/${songId}?points=${points}&showId=${showId}`;
+            // 2. Changed 'points=' to 'score=' to match your Java castVote(Integer score...)
+            const url = `/api/vote/${songId}?score=${scoreValue}&showId=${showId}`;
         
             try {
                 const response = await fetch(url, { method: 'POST' });
                 const result = await response.text();
                 alert(result); 
-                
-                // Optional: Refresh page or update UI after successful vote
-                if (!result.includes("Error")) {
-                    // location.reload(); 
-                }
             } catch (error) {
                 console.error("Fetch error:", error);
-                alert("Connection failed. Is the server running?");
+                alert("Connection failed.");
             }
         }
     </script>

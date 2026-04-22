@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>ESC 2026 Scoreboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        .qualifier-row { background-color: #e8f5e9 !important; border-left: 5px solid #28a745; }
+        .non-qualifier-row { opacity: 0.7; }
+        .qualifier-divider { 
+            background-color: #212529; 
+            color: white; 
+            text-align: center; 
+            font-weight: bold; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-4 text-primary">Scoreboard: <span th:text="${currentShow.type}">Show</span></h1>
+        <a th:href="@{/songs(showId=${currentShow.id})}" class="btn btn-outline-secondary">Back to Voting</a>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-body p-0">
+            <table class="table table-hover mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Country</th>
+                        <th>Song</th>
+                        <th class="text-center">Jury</th>
+                        <th class="text-center">Public</th>
+                        <th class="text-center">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <th:block th:each="entry, iterStat : ${results}">
+                        
+                        <tr th:if="${iterStat.count == 11}" class="qualifier-divider">
+                            <td colspan="6">Non-Qualifiers below this line</td>
+                        </tr>
+
+                        <tr th:classappend="${iterStat.count <= 10} ? 'qualifier-row' : 'non-qualifier-row'">
+                            <td th:text="${iterStat.count}">1</td>
+                            <td>
+                                <span class="fw-bold" th:text="${entry.countryName}">Country</span>
+                                <span th:if="${iterStat.count <= 10}"> ✅</span>
+                            </td>
+                            <td th:text="${entry.songTitle}">Song Title</td>
+                            <td class="text-center">
+                                <span class="badge bg-secondary" th:text="${entry.juryPoints}">0</span>
+                            </td>
+                            <td class="text-center">
+                                <span class="badge bg-info text-dark" th:text="${entry.publicPoints}">0</span>
+                            </td>
+                            <td class="text-center">
+                                <span class="badge bg-primary" th:text="${entry.totalPoints}">0</span>
+                            </td>
+                        </tr>
+                    </th:block>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

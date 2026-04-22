@@ -1,4 +1,5 @@
 /Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/App.java
+/Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/Controller/AdminController.java
 /Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/Controller/DemoController.java
 /Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/Controller/RegistrationController.java
 /Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/Controller/SongController.java
@@ -8,6 +9,7 @@
 /Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/dto/RegistrationRequest.java
 /Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/dto/ScoreboardEntry.java
 /Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/model/Country.java
+/Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/model/Finalist.java
 /Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/model/Jury.java
 /Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/model/Performer.java
 /Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/model/Point.java
@@ -17,6 +19,7 @@
 /Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/model/Vote.java
 /Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/model/Voter.java
 /Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/repository/CountryRepository.java
+/Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/repository/FinalistRepository.java
 /Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/repository/PerformerRepository.java
 /Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/repository/PointRepository.java
 /Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/repository/PublicVoteRepository.java
@@ -26,4 +29,5 @@
 /Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/repository/VoterRepository.java
 /Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/service/DataInitializer.java
 /Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/service/ScoreboardService.java
+/Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/service/ShowService.java
 /Users/I750363/Desktop/EuroVision/my-maven-project/src/main/java/com/example/service/VoteService.java

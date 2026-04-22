@@ -32,32 +32,31 @@ public class SongController {
     }
 
     @PostMapping("/vote/{songId}")
-    public String voteForSong(@PathVariable Long songId, 
-                              @RequestParam(required = false) Integer points, // Make optional
-                              @RequestParam Long showId,
-                              HttpSession session) { // Use HttpSession directly
-        try {
-            // 1. Get Voter from Session (Dynamic & Secure)
-            Voter voter = (Voter) session.getAttribute("loggedInVoter");
-            if (voter == null) {
-                return "Error: You must be logged in to vote.";
-            }
-
-            // 2. Fetch Entities
-            Song song = songRepository.findById(songId)
-                .orElseThrow(() -> new RuntimeException("Song not found"));
-            Show show = showRepository.findById(showId)
-                .orElseThrow(() -> new RuntimeException("Show not found"));
-
-            // 3. Delegate to VoteService (The logic handles Jury vs Public)
-            voteService.castVote(points, voter, song, show);
-
-            return "Vote successfully recorded for " + song.getTitle() + "!";
-            
-        } catch (IllegalArgumentException e) {
-            return "Rule Violation: " + e.getMessage();
-        } catch (Exception e) {
-            return "System Error: " + e.getMessage();
+public String voteForSong(@PathVariable Long songId, 
+                          @RequestParam(name = "score", required = false) Integer score, // Changed from points to score
+                          @RequestParam Long showId,
+                          HttpSession session) { 
+    try {
+        Voter voter = (Voter) session.getAttribute("loggedInVoter");
+        if (voter == null) {
+            return "Error: You must be logged in to vote.";
         }
+
+        Song song = songRepository.findById(songId)
+            .orElseThrow(() -> new RuntimeException("Song not found"));
+        Show show = showRepository.findById(showId)
+            .orElseThrow(() -> new RuntimeException("Show not found"));
+
+        // Pass the 'score' variable here
+        voteService.castVote(score, voter, song, show);
+
+        return "Vote successfully recorded for " + song.getTitle() + "!";
+        
+    } catch (IllegalArgumentException e) {
+        // This will now correctly catch the "1-8, 10, or 12" message from VoteService
+        return "Rule Violation: " + e.getMessage();
+    } catch (Exception e) {
+        return "System Error: " + e.getMessage();
     }
+}
 }

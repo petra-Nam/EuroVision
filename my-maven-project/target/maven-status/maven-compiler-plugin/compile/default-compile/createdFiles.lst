@@ -18,6 +18,8 @@ com/example/repository/ShowRepository.class
 com/example/model/PublicVote.class
 com/example/dto/LoginRequest.class
 com/example/repository/VoteRepository.class
+com/example/Controller/AdminController.class
+com/example/service/ShowService.class
 com/example/Controller/SongController.class
 com/example/service/VoteService.class
 com/example/repository/PointRepository.class

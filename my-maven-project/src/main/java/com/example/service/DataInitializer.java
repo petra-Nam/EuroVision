@@ -109,7 +109,7 @@ public class DataInitializer implements CommandLineRunner {
                     else if (n.equals("Portugal")) s.setTitle("Rosa");
                     else if (n.equals("Romania")) s.setTitle("Choke Me");
                     else if (n.equals("San Marino")) s.setTitle("Superstar");
-                    else if (n.equals("Sppain")) s.setTitle("T amaré");
+                    else if (n.equals("Spain")) s.setTitle("T amaré");
                     else if (n.equals("Serbia")) s.setTitle("Kraj mene");
                     else s.setTitle("Eurovision Entry - " + n);
 

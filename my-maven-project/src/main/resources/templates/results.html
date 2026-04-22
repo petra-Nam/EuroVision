@@ -9,7 +9,11 @@
     </style>
 </head>
 <body class="bg-light">
-
+    <div class="mb-3">
+        <a th:href="@{/songs(showId=${show.id})}" class="btn btn-outline-primary btn-sm">
+            &larr; Back to Voting
+        </a>
+    </div>
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="display-4 text-primary">Scoreboard: <span th:text="${show.type}">Show</span></h1>
