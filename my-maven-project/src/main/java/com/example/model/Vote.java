@@ -10,7 +10,7 @@ public class Vote {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // The person casting the vote (Your existing Voter/Jury entity)
+    // The person casting the vote )
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "voter_id", nullable = false)
     private Voter voter;

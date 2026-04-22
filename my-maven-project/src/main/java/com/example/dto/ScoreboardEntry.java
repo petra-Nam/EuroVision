@@ -7,7 +7,7 @@ public class ScoreboardEntry {
     private long publicPoints; // Changed from Long to long
     private long totalPoints;  // Changed from Long to long
 
-    // 1. Updated Constructor to handle long primitives
+    // 1. Constructor to handle long primitives
     public ScoreboardEntry(String countryName, String songTitle, long juryPoints, long publicPoints, long totalPoints) {
         this.countryName = countryName;
         this.songTitle = songTitle;
@@ -37,7 +37,7 @@ public class ScoreboardEntry {
         return totalPoints;
     }
 
-    // 3. Optional: Setters (If you ever need to update entries manually)
+    // 3. Optional: Setters (
     public void setPublicPoints(long publicPoints) {
         this.publicPoints = publicPoints;
     }

@@ -22,12 +22,12 @@ private Song song;
     private boolean isBigFive;
     private boolean isVirtualGroup;
 
-    // Manual Setters (This fixes the "Unresolved compilation problems")
+    // Manual Setters 
     public void setName(String name) { this.name = name; }
     public void setBigFive(boolean bigFive) { this.isBigFive = bigFive; }
     public void setVirtualGroup(boolean virtualGroup) { this.isVirtualGroup = virtualGroup; }
 
-    // Manual Getters (Good practice to have them)
+    // Manual Getters 
     public Long getId() { return id; }
     public String getName() { return name; }
     public boolean isBigFive() { return isBigFive; }
