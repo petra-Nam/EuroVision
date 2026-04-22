@@ -21,7 +21,7 @@ It uses **JPA/Hibernate (ORM)** with a **MySQL database** to handle complex voti
 
 ```bash
 # Clone the repository
-git clone <your-repo-link>
+git clone(https://github.com/petra-Nam/EuroVision)
 
 # Navigate into the project
 cd eurovision-2026
