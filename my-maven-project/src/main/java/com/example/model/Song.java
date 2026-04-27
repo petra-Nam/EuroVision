@@ -18,9 +18,9 @@ public class Song {
     private String title;
 
     // In Song.java
-@OneToOne(fetch = FetchType.EAGER) // EAGER is better for your simple fetch logic
+@OneToOne(fetch = FetchType.EAGER) // 
 @JoinColumn(name = "country_id", unique = true)
-@JsonIgnoreProperties("song") // <--- THIS STOPS THE 500 ERROR
+@JsonIgnoreProperties("song") // 
 private Country country;
 
     // 2. orphanRemoval ensures that if you delete a song, its performers are cleaned up

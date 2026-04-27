@@ -226,7 +226,7 @@ for (int i = 0; i < allSongs.size(); i++) {
 System.out.println(">> 2026 Contestants assigned to Semi 1, Semi 2, and Final!");
 
 
-        // STEP 5: Initialize Voters - FIXED ERRORS HERE
+        // STEP 5: Initialize Voters 
         if (voterRepository.count() == 0) { 
             System.out.println(">> Recruiting 2026 Juries and Public Voters...");
             List<Country> allCountries = countryRepository.findAll();
@@ -240,7 +240,7 @@ System.out.println(">> 2026 Contestants assigned to Semi 1, Semi 2, and Final!")
                 voterRepository.save(j);
 
                 // 2. Create a Public Voter 
-                // Since you don't have 'PublicVoter' class, we use the base 'Voter' class
+                
                 Voter v = new Voter(); 
                 v.setName(c.getName() + " Public");
                 v.setOriginCountry(c);

@@ -23,11 +23,14 @@ It uses **JPA/Hibernate (ORM)** with a **MySQL database** to handle complex voti
 # Clone the repository
 git clone(https://github.com/petra-Nam/EuroVision)
 
-# Navigate into the project
-cd eurovision-2026
+# 1. Navigate to your project folder
+cd my-maven-project
 
-# Build Docker image
-docker build -t eurovision-2026 .
+# 2. Package your Java code into a JAR (Crucial!)
+mvn clean package -DskipTests
+
+# 3. Build and start both the App and the DB
+docker-compose up --build
 
 # Run the container
 docker run -p 8080:8080 eurovision-2026
