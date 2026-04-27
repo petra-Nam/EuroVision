@@ -32,8 +32,7 @@ mvn clean package -DskipTests
 # 3. Build and start both the App and the DB
 docker-compose up --build
 
-# Run the container
-docker run -p 8080:8080 eurovision-2026
+
 ```
 
 The application will be available at:
